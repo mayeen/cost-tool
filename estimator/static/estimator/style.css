@@ -170,3 +170,41 @@ button {
 }
 
 button:hover { background: #1d4ed8; }
+
+/* Immigration results */
+.context-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.context-line p { margin: 0; font-size: 15px; }
+.context-line a { font-size: 14px; }
+
+.verdict {
+  background: #e7f1ff;
+  border: 1px solid #b6d4fe;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.verdict h2 { margin: 0 0 8px; font-size: 18px; }
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px 24px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checks p { margin: 0; }
+
+/* Source link*/
+.src {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 13px;
+}

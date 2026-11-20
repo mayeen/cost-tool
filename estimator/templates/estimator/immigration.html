@@ -1,13 +1,23 @@
 {% extends "estimator/base.html" %}
 
 {% block content %}
-  <h2>Immigration</h2>
-
   {% if inputs_ok %}
-    <p class="intro">
+    <div class="context-line">
+      <p>{{ result.summary }}</p>
       <a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a>
-    </p>
-    <p><strong>Route:</strong> {{ route }}</p>
+    </div>
+
+    <section class="verdict">
+      <h2>{{ result.verdict.title }}</h2>
+      <div class="checks">
+        {% for check in result.verdict.checks %}
+          <p><strong>{{ check.label }}:</strong> {{ check.text }}</p>
+        {% endfor %}
+      </div>
+      {% for source in result.verdict.sources %}
+        <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
+      {% endfor %}
+    </section>
 
   {% elif form.is_bound %}
     <p class="errorlist">Some inputs are missing or not valid.</p>
