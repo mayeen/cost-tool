@@ -1,19 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Assignment Cost Estimate</title>
-</head>
-<body>
-  <h1>Assignment Cost Estimate</h1>
-  <p>What it costs, and what it takes, to send an employee abroad.</p>
+{% extends "estimator/base.html" %}
 
-  <nav>
-    <a href="{% url 'cost' %}">Cost estimate</a>
-    <a href="{% url 'immigration' %}">Immigration</a>
-  </nav>
-
+{% block content %}
   <h2>Immigration</h2>
   <p>Work permit, business visit and passport requirements.</p>
-</body>
-</html>
+
+  <form method="get" novalidate>
+    {{ form.as_p }}
+    <button type="submit" name="submit" value="1">Check requirements</button>
+  </form>
+
+  {% if route %}
+    <p><strong>Route:</strong> {{ route }}</p>
+  {% endif %}
+{% endblock %}

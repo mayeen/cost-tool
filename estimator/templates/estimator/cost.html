@@ -1,18 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Assignment Cost Estimate</title>
-</head>
-<body>
-  <h1>Assignment Cost Estimate</h1>
-  <p>What it costs, and what it takes, to send an employee abroad.</p>
+{% extends "estimator/base.html" %}
 
-  <nav>
-    <a href="{% url 'cost' %}">Cost Estimator</a>
-    <a href="{% url 'immigration' %}">Immigration</a>
-  </nav>
-
+{% block content %}
   <h2>Cost estimate</h2>
-</body>
-</html>
+{% endblock %}
