@@ -313,3 +313,7 @@ CH_TO_GB_SWISS = {
 ROUTES = {
     ("CH", "GB", "swiss"): CH_TO_GB_SWISS,
 }
+
+def get_route(home, host, nationality):
+    return ROUTES.get((home, host, nationality))
+

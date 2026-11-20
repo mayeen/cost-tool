@@ -17,8 +17,8 @@
 
   <main class="wrap">
     <nav class="tabs" aria-label="Tool sections">
-      <a href="{% url 'cost' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'cost' %} aria-current="page"{% endif %}>1 · Cost estimate</a>
-      <a href="{% url 'immigration' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'immigration' %} aria-current="page"{% endif %}>2 · Immigration</a>
+      <a href="{% url 'cost' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'cost' %} aria-current="page"{% endif %}>1. Cost estimate</a>
+      <a href="{% url 'immigration' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'immigration' %} aria-current="page"{% endif %}>2. Immigration</a>
 
     </nav>
 

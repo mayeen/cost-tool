@@ -208,3 +208,38 @@ button:hover { background: #1d4ed8; }
   margin-top: 4px;
   font-size: 13px;
 }
+
+/* Requirement cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card h2 { margin: 0 0 14px; font-size: 17px; }
+
+.item {
+  padding: 12px 0;
+  border-top: 1px solid #e9ecef;
+}
+
+.item:first-of-type { border-top: 0; padding-top: 0; }
+
+.ttl { margin: 0; font-size: 15px; font-weight: 600; }
+
+.txt {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #343a40;
+}
+
+.src + .src { margin-left: 12px; }
+

@@ -1,16 +1,16 @@
 from django import forms
 
 HOME_COUNTRY = [
-    ("", "— Select —"),
+    ("", "Select"),
     ("CH", "Switzerland"),
 ]
 HOST_COUNTRY = [
-    ("", "— Select —"),
+    ("", "Select"),
     ("GB", "United Kingdom"),
 ]
 
 NATIONALITY = [
-    ("", "— Select —"),
+    ("", "Select"),
     ("swiss", "Swiss"),
 ]
 

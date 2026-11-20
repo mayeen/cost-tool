@@ -18,6 +18,23 @@
         <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
       {% endfor %}
     </section>
+    <div class="cards">
+      {% for section in result.sections %}
+        <section class="card">
+          <h2>{{ section.title }}</h2>
+          {% for item in section.items %}
+            <div class="item">
+              <p class="ttl">{{ item.title }}</p>
+              <p class="txt">{{ item.summary }}</p>
+              {% for source in item.sources %}
+                <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </section>
+      {% endfor %}
+    </div>
+
 
   {% elif form.is_bound %}
     <p class="errorlist">Some inputs are missing or not valid.</p>
