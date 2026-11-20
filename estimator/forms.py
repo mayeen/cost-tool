@@ -15,7 +15,7 @@ NATIONALITY = [
 ]
 
 
-class ImmigrationForm(forms.Form):
+class EstimatorForm(forms.Form):
     home_country = forms.ChoiceField(
         label="Home country",
         choices=HOME_COUNTRY,

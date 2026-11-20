@@ -1,44 +1,83 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: #1f2933;
-  background: #fafafa;
+  color: #212529;
+  background: #f8f9fa;
 }
 
-.container {
-  max-width: 960px;
+a { color: #0a58ca; }
+a:hover { color: #084298; }
+
+/* Page width */
+.wrap {
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 0 32px;
+  box-sizing: border-box;
 }
 
-h1 { margin: 0 0 4px; }
+/* Header band */
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.site-header .wrap { padding-top: 24px; padding-bottom: 24px; }
+
+.site-header h1 { margin: 0 0 4px; font-size: 28px; }
 
 .subtitle {
-  margin: 0 0 24px;
-  color: #6b7280;
+  margin: 0;
+  font-size: 15px;
+  color: #5c636a;
 }
 
+main.wrap { padding-top: 32px; padding-bottom: 32px; }
+
+/* Folder tabs */
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 24px;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .tab {
-  padding: 10px 16px;
-  color: #6b7280;
+  padding: 12px 20px;
+  color: #0a58ca;
   text-decoration: none;
-  border-bottom: 2px solid transparent;
+  border: 1px solid transparent;
+  border-radius: 8px 8px 0 0;
   margin-bottom: -1px;
 }
 
-.tab:hover { color: #1f2933; }
+.tab:hover { background: #e9ecef; }
 
-.tab.active {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
+.tab[aria-current="page"] {
+  color: #212529;
   font-weight: 600;
+  background: #fff;
+  border-color: #dee2e6;
+  border-bottom-color: #fff;
+}
+
+/* Panel under the tabs */
+.panel {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.panel > * { margin: 0; }
+
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .panel { padding: 20px 16px; }
 }
 
 /* Form layout */

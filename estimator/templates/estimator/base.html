@@ -8,18 +8,24 @@
   <link rel="stylesheet" href="{% static 'estimator/style.css' %}">
 </head>
 <body>
-  <div class="container">
-    <h1>Assignment Cost Estimate</h1>
-    <p class="subtitle">What it costs, and what it takes, to send an employee abroad.</p>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Assignment Cost Estimate</h1>
+      <p class="subtitle">Cost to send an employee abroad.</p>
+    </div>
+  </header>
 
-    <nav class="tabs">
-      <a href="{% url 'cost' %}" class="tab{% if active_tab == 'cost' %} active{% endif %}">Cost estimate</a>
-      <a href="{% url 'immigration' %}" class="tab{% if active_tab == 'immigration' %} active{% endif %}">Immigration</a>
+  <main class="wrap">
+    <nav class="tabs" aria-label="Tool sections">
+      <a href="{% url 'cost' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'cost' %} aria-current="page"{% endif %}>1 · Cost estimate</a>
+      <a href="{% url 'immigration' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="tab"{% if active_tab == 'immigration' %} aria-current="page"{% endif %}>2 · Immigration</a>
+
     </nav>
 
-    <main>
+    <div class="panel">
       {% block content %}{% endblock %}
-    </main>
-  </div>
+    </div>
+  </main>
 </body>
+
 </html>

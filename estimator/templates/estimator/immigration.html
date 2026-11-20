@@ -2,35 +2,19 @@
 
 {% block content %}
   <h2>Immigration</h2>
-  <p class="intro">Fill in the assignment details, then click <strong>Check requirements</strong>.</p>
 
-  <form method="get" novalidate>
-    {% if form.non_field_errors %}
-      <div class="form-errors">{{ form.non_field_errors }}</div>
-    {% endif %}
-
-    <div class="form-grid">
-      {% for field in form %}
-        <div class="field{% if field.errors %} has-error{% endif %}">
-          <div class="label-row">
-            {{ field.label_tag }}
-            {% if field.help_text %}
-              <details class="info">
-                <summary aria-label="Help: {{ field.label }}">ⓘ</summary>
-                <div class="info-text">{{ field.help_text }}</div>
-              </details>
-            {% endif %}
-          </div>
-          {{ field }}
-          {{ field.errors }}
-        </div>
-      {% endfor %}
-    </div>
-
-    <button type="submit" name="submit" value="1">Check requirements</button>
-  </form>
-
-  {% if route %}
+  {% if inputs_ok %}
+    <p class="intro">
+      <a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a>
+    </p>
     <p><strong>Route:</strong> {{ route }}</p>
+
+  {% elif form.is_bound %}
+    <p class="errorlist">Some inputs are missing or not valid.</p>
+    <p><a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Please fix them in tab 1</a></p>
+
+  {% else %}
+    <p class="intro">No inputs yet.</p>
+    <p><a href="{% url 'cost' %}">Please fill in the inputs in tab 1</a></p>
   {% endif %}
 {% endblock %}
