@@ -2,10 +2,31 @@
 
 {% block content %}
   <h2>Immigration</h2>
-  <p>Work permit, business visit and passport requirements.</p>
+  <p class="intro">Fill in the assignment details, then click <strong>Check requirements</strong>.</p>
 
   <form method="get" novalidate>
-    {{ form.as_p }}
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="form-grid">
+      {% for field in form %}
+        <div class="field{% if field.errors %} has-error{% endif %}">
+          <div class="label-row">
+            {{ field.label_tag }}
+            {% if field.help_text %}
+              <details class="info">
+                <summary aria-label="Help: {{ field.label }}">ⓘ</summary>
+                <div class="info-text">{{ field.help_text }}</div>
+              </details>
+            {% endif %}
+          </div>
+          {{ field }}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+    </div>
+
     <button type="submit" name="submit" value="1">Check requirements</button>
   </form>
 

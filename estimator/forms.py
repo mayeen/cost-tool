@@ -41,17 +41,23 @@ class ImmigrationForm(forms.Form):
         min_value=0,
         max_value=60,
     )
-    base_salary_chf = forms.DecimalField(
-        label="Annual base salary (CHF)",
+    base_salary_home_country = forms.DecimalField(
+        label="Annual base salary",
         min_value=0,
         max_digits=12,
         decimal_places=2,
+        help_text="home country currency: Base salary only"
     )
     exchange_rate = forms.DecimalField(
         label="Exchange rate",
         min_value=0.01,
         max_digits=8,
         decimal_places=4,
+         help_text=(
+            "How many units of home currency equal 1 unit of host currency. "
+            "Example: if the home currency is CHF and the host currency is GBP, "
+            "and £1 = CHF 1.10, enter 1.10."
+        ),
     )
 
     def clean(self):
