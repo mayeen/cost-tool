@@ -20,7 +20,11 @@
               </details>
             {% endif %}
           </div>
-          {{ field }}
+          <div class="input-row">
+            <span class="cur" aria-hidden="true"></span>
+            {{ field }}
+          </div>
+
           {{ field.errors }}
         </div>
       {% endfor %}

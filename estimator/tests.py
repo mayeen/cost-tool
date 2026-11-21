@@ -20,6 +20,8 @@ def make_input(**changes):
         "years_with_employer": 3,
         "base_salary_home": Decimal("150000"),
         "exchange_rate": Decimal("1.10"),
+
+
     }
     values.update(changes)
     return EstimatorInput(**values)
@@ -36,6 +38,11 @@ FORM_DATA = {
     "base_salary_home_country": "150000",
     "exchange_rate": "1.10",
     "submit": "1",
+    "bonus_home_country": "20000",
+    "housing_monthly_host": "3000",
+    "relocation_allowance_home": "5000",
+    "moving_costs_host": "6000",
+    "temporary_housing_host": "4000",
 }
 
 

@@ -110,6 +110,8 @@ def immigration(request):
                     "total": sum(row["amount"] for row in cost_rows),
                 },
                 "timeline": build_timeline(route, visa, data["start_date"]),
+                "assumptions": route["common"]["assumptions"] + visa["assumptions"],
+
             }    
          
 

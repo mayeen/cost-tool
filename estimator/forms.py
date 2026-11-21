@@ -46,8 +46,49 @@ class EstimatorForm(forms.Form):
         min_value=0,
         max_digits=12,
         decimal_places=2,
-        help_text="home country currency: Base salary only"
+        help_text="home country currency: Base salary only",
+        widget=forms.NumberInput(attrs={"data-currency": "home"}),
+
     )
+    bonus_home_country = forms.DecimalField(
+        label="Annual bonus",
+        min_value=0,
+        max_digits=12,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"data-currency": "home"}),
+
+    )
+    housing_monthly_host = forms.DecimalField(
+        label="Housing per month",
+        min_value=0,
+        max_digits=12,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"data-currency": "host"}),
+
+    )
+    relocation_allowance_home = forms.DecimalField(
+        label="Relocation allowance",
+        min_value=0,
+        max_digits=12,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"data-currency": "home"}),
+    )
+    moving_costs_host = forms.DecimalField(
+        label="Moving costs",
+        min_value=0,
+        max_digits=12,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"data-currency": "host"}),
+
+    )
+    temporary_housing_host = forms.DecimalField(
+        label="Temporary housing",
+        min_value=0,
+        max_digits=12,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={"data-currency": "host"}),
+    )
+
     exchange_rate = forms.DecimalField(
         label="Exchange rate",
         min_value=0.01,
