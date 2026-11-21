@@ -1,3 +1,8 @@
+from decimal import Decimal
+from datetime import timedelta
+from .calculations.inputs import EstimatorInput
+from .calculations.immigration import build_verdict, pick_visa
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -11,6 +16,14 @@ SECTIONS = [
     ("passport", "Passport"),
     ("employer_duty", "Employer duty"),
 ]
+
+BASIS_TEXT = {
+    "one_off": "One-off",
+    "visa_length": "Depends on visa length",
+    "per_year_half_bands": "Per year of visa",
+    "first_12_then_6": "First 12 months, then per 6 months",
+}
+
 def build_sections(route, visa):
     requirements = route["common"]["requirements"] + visa["requirements"]
 
@@ -26,6 +39,42 @@ def build_sections(route, visa):
                 })
         sections.append({"title": title, "items": items})
     return sections
+
+def build_cost_rows(route, visa):
+    rows = []
+    for cost in route["common"]["costs"] + visa["costs"]:
+        rows.append({
+            "name": cost["name"],
+            "basis": BASIS_TEXT[cost["basis"]],
+            "amount": Decimal("100"),  
+            "sources": [SOURCES[k] for k in cost["source"]],
+        })
+    return rows
+
+def build_timeline(route, visa, start_date):
+    steps = []
+    lead_weeks = 0
+
+    for step in visa["timeline"] + route["common"]["timeline"]:
+        parallel = step.get("parallel", False)
+        if not parallel:
+            lead_weeks += step["weeks"]
+
+        steps.append({
+            "name": step["name"],
+            "duration": step["duration"],
+            "parallel": parallel,
+            "sources": [SOURCES[k] for k in step["source"]],
+        })
+
+    all_steps = visa["timeline"] + route["common"]["timeline"]
+    return {
+        "steps": steps,
+        "lead_weeks": lead_weeks,
+        "start_date": start_date,
+        "start_by": start_date - timedelta(weeks=lead_weeks),
+        "includes_licence": any(s.get("only_if_no_licence") for s in all_steps),
+    }
 
 
 # Create your views here.
@@ -50,30 +99,27 @@ def immigration(request):
         if route is None:
             result = {"not_covered": True}
         else:
-            visa = route["visas"][0]
+            inp = EstimatorInput.from_cleaned_data(data)
+            visa, check = pick_visa(route, inp)
 
-        # dummy data
-        result = {
-            "summary": "Swiss national, Switzerland -> United Kingdom, 1 Jan 2026 to 31 Dec 2027",
-            "verdict": {
-                "title": "Work visa needed: Senior or Specialist Worker visa (Global Business Mobility)",
-                "checks": [
-                    {
-                        "label": "Salary check",
-                        "text": "£100,000 a year. Needs at least £52,500 or the job's going rate, whichever is higher.",
-                    },
-                    {
-                        "label": "Time with employer",
-                        "text": "5 years. Needs 12 months when earning under £73,900; none at £73,900 or more.",
-                    },
-                ],
-                "sources": [SOURCES["ssw_eligibility"]],
-            },
-            "sections": build_sections(route, visa),
+            cost_rows = build_cost_rows(route, visa)
 
-        }
-        # data = form.cleaned_data
-        # route = f"{data['home_country']} > {data['host_country']}"
+
+            # dummy data
+            result = {
+                "summary": "Swiss national, Switzerland -> United Kingdom, 1 Jan 2026 to 31 Dec 2027",
+                "verdict": build_verdict(visa, check, inp),
+                "sections": build_sections(route, visa),
+                "costs": {
+                    "rows": cost_rows,
+                    "total": sum(row["amount"] for row in cost_rows),
+                },
+                "timeline": build_timeline(route, visa, data["start_date"]),
+
+
+
+            }
+         
 
     return render(request, "estimator/immigration.html", {
         "active_tab": "immigration",

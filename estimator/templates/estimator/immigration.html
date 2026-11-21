@@ -2,39 +2,101 @@
 
 {% block content %}
   {% if inputs_ok %}
-    <div class="context-line">
-      <p>{{ result.summary }}</p>
-      <a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a>
-    </div>
+    {% if result.not_covered %}
+      <p class="errorlist">This combination of countries and nationality is not covered yet.</p>
+      <p><a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a></p>
 
-    <section class="verdict">
-      <h2>{{ result.verdict.title }}</h2>
-      <div class="checks">
-        {% for check in result.verdict.checks %}
-          <p><strong>{{ check.label }}:</strong> {{ check.text }}</p>
+    {% else %}
+      <div class="context-line">
+        <p>{{ result.summary }}</p>
+        <a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a>
+      </div>
+
+      <section class="verdict">
+        <h2>{{ result.verdict.title }}</h2>
+        <div class="checks">
+          {% for check in result.verdict.checks %}
+            <p><strong>{{ check.label }}:</strong> {{ check.text }}</p>
+          {% endfor %}
+        </div>
+        {% for source in result.verdict.sources %}
+          <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
+        {% endfor %}
+      </section>
+
+      <div class="cards">
+        {% for section in result.sections %}
+          <section class="card">
+            <h2>{{ section.title }}</h2>
+            {% for item in section.items %}
+              <div class="item">
+                <p class="ttl">{{ item.title }}</p>
+                <p class="txt">{{ item.summary }}</p>
+                {% for source in item.sources %}
+                  <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          </section>
         {% endfor %}
       </div>
-      {% for source in result.verdict.sources %}
-        <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
-      {% endfor %}
-    </section>
-    <div class="cards">
-      {% for section in result.sections %}
-        <section class="card">
-          <h2>{{ section.title }}</h2>
-          {% for item in section.items %}
-            <div class="item">
-              <p class="ttl">{{ item.title }}</p>
-              <p class="txt">{{ item.summary }}</p>
-              {% for source in item.sources %}
-                <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
-              {% endfor %}
-            </div>
-          {% endfor %}
-        </section>
-      {% endfor %}
-    </div>
 
+      <section>
+        <h2 class="section-title">How much it costs</h2>
+        <div class="table-wrap">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Basis</th>
+                <th class="num">Amount</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in result.costs.rows %}
+                <tr>
+                  <td>{{ row.name }}</td>
+                  <td>{{ row.basis }}</td>
+                  <td class="num">£{{ row.amount|floatformat:"2g" }}</td>
+                  <td>
+                    {% for source in row.sources %}
+                      <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">{{ source.title }}</a>
+                    {% endfor %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="total">
+                <td colspan="2">Total</td>
+                <td class="num">£{{ result.costs.total|floatformat:"2g" }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">How long it takes</h2>
+        <ol class="timeline">
+          {% for step in result.timeline.steps %}
+            <li>
+              <strong>{{ step.name }}{% if step.parallel %}, in parallel{% endif %}:</strong>
+              {{ step.duration }}.
+              {% for source in step.sources %}
+                <a href="{{ source.url }}" target="_blank" rel="noopener">Source</a>
+              {% endfor %}
+            </li>
+          {% endfor %}
+        </ol>
+        <p class="lead-time">
+          <strong>Start about {{ result.timeline.lead_weeks }} weeks before {{ result.timeline.start_date|date:"j F Y" }}</strong>,
+          by {{ result.timeline.start_by|date:"j F Y" }}{% if result.timeline.includes_licence %}, because the UK company has no sponsor licence yet{% endif %}.
+        </p>
+      </section>
+
+    {% endif %}
 
   {% elif form.is_bound %}
     <p class="errorlist">Some inputs are missing or not valid.</p>
