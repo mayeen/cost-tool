@@ -98,6 +98,7 @@
       {% else %}
         <p>No work visa in this tool fits these inputs, so requirements, costs and timeline are not shown. Change the salary or time with employer in tab 1 to check again.</p>
       {% endif %}
+      {% include "estimator/_assumptions.html" with assumptions=result.assumptions %}
 
 
     {% endif %}
