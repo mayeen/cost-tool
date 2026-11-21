@@ -8,6 +8,8 @@ from django.http import HttpResponse
 
 from estimator.rules.immigration import SOURCES, get_route
 from .forms import EstimatorForm
+from .calculations.cost import add_totals
+
 
 
 SECTIONS = [
@@ -16,6 +18,53 @@ SECTIONS = [
     ("passport", "Passport"),
     ("employer_duty", "Employer duty"),
 ]
+def dummy_cost_result():
+    """DUMMY figures (from my research notes): steps 21-25 replace this with real logic."""
+    d = Decimal
+    sections = [
+        {
+            "title": "1. Home pay",
+            "subtotal_label": "Home pay",
+            "rows": [
+                {"name": "Base salary", "tag": "", "amounts": [d("136363.64"), d("136363.64")], "sources": []},
+                {"name": "Bonus", "tag": "", "amounts": [d("18181.82"), d("18181.82")], "sources": []},
+            ],
+        },
+        {
+            "title": "2. Assignment benefits",
+            "subtotal_label": "Assignment benefits",
+            "rows": [
+                {"name": "Housing in London", "tag": "Taxable benefit in kind", "amounts": [d("36000"), d("36000")], "sources": []},
+                {"name": "Relocation allowance", "tag": "Taxable cash", "amounts": [d("4545.45"), None], "sources": []},
+                {"name": "Moving costs", "tag": "Not taxable in the UK", "amounts": [d("6000"), None], "sources": []},
+                {"name": "Temporary housing", "tag": "Taxable benefit in kind", "amounts": [d("4000"), None], "sources": []},
+            ],
+        },
+        {
+            "title": "3. Host tax and charges paid by the employer",
+            "subtotal_label": "Host tax and charges",
+            "rows": [
+                {"name": "UK income tax, including tax on tax", "tag": "Grossed up, see working below", "amounts": [d("107892.74"), d("100901.01")], "sources": []},
+                {"name": "UK employer National Insurance", "tag": "Swiss system applies, see below", "amounts": [d("0"), d("0")], "sources": []},
+            ],
+        },
+        {
+            "title": "4. Deductions",
+            "subtotal_label": "Deductions",
+            "subtract": True,
+            "rows": [
+                {"name": "Hypothetical Swiss income tax", "tag": "Federal, cantonal and communal", "amounts": [d("26889.09"), d("26889.09")], "sources": []},
+                {"name": "Hypothetical Swiss social security", "tag": "AHV/IV/EO and unemployment insurance", "amounts": [d("9672.91"), d("9672.91")], "sources": []},
+            ],
+        },
+    ]
+    return {
+        "years": ["Year 1 (2026/27)", "Year 2 (2027/28)"],
+        "sections": sections,
+        "totals": add_totals(sections),
+    }
+
+
 #summary line for tab 2
 def build_summary(form, inp):
     def label(field):
@@ -76,11 +125,12 @@ def build_timeline(route, visa, start_date):
 def cost(request):
     form = EstimatorForm(request.GET if "submit" in request.GET else None)
     inputs_ok = form.is_valid()
-
+    result = dummy_cost_result() if inputs_ok else None
     return render(request, "estimator/cost.html", {
         "active_tab": "cost",
         "form": form,
         "inputs_ok": inputs_ok,
+        "result": result,
     })
 
 def immigration(request):

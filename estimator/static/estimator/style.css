@@ -337,3 +337,13 @@ form:has(#id_home_country option[value="CH"]:checked) .field:has([data-currency=
 form:has(#id_host_country option[value="GB"]:checked) .field:has([data-currency="host"]) .cur { display: flex; }
 form:has(#id_host_country option[value="GB"]:checked) .field:has([data-currency="host"]) .cur::before { content: "GBP"; }
 
+/* Employer cost table */
+.group td {
+  font-weight: 700;
+  background: #f8f9fa;
+}
+
+.subtotal td {
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}

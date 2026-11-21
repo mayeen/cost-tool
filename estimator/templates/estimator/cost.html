@@ -34,6 +34,74 @@
   </form>
 
   {% if inputs_ok %}
-    <p><strong>Inputs OK.</strong> Results will appear here.</p>
+    <section>
+      <h2 class="section-title">Employer cost</h2>
+      <div class="table-wrap">
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>UK tax tag / note</th>
+              {% for year in result.years %}
+                <th class="num">{{ year }}</th>
+              {% endfor %}
+              <th class="num">Total</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+
+          {% for section in result.sections %}
+            <tbody>
+              <tr class="group"><td colspan="6">{{ section.title }}</td></tr>
+
+              {% for row in section.rows %}
+                <tr>
+                  <td>{{ row.name }}</td>
+                  <td>{{ row.tag }}</td>
+                  {% for amount in row.amounts %}
+                    <td class="num">{% if amount is None %}-{% else %}{% if section.subtract %}-{% endif %}£{{ amount|floatformat:"2g" }}{% endif %}</td>
+                  {% endfor %}
+                  <td class="num">{% if section.subtract %}-{% endif %}£{{ row.total|floatformat:"2g" }}</td>
+                  <td>
+                    {% for source in row.sources %}
+                      <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">{{ source.title }}</a>
+                    {% endfor %}
+                  </td>
+                </tr>
+              {% endfor %}
+
+              <tr class="subtotal">
+                <td colspan="2">{{ section.subtotal_label }}</td>
+                {% for amount in section.subtotal %}
+                  <td class="num">{% if section.subtract %}-{% endif %}£{{ amount|floatformat:"2g" }}</td>
+                {% endfor %}
+                <td class="num">{% if section.subtract %}-{% endif %}£{{ section.subtotal_total|floatformat:"2g" }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          {% endfor %}
+
+          <tfoot>
+            <tr class="total">
+              <td colspan="2">Total employer cost</td>
+              {% for amount in result.totals.amounts %}
+                <td class="num">£{{ amount|floatformat:"2g" }}</td>
+              {% endfor %}
+              <td class="num">£{{ result.totals.total|floatformat:"2g" }}</td>
+              <td></td>
+            </tr>
+            <tr class="total">
+              <td colspan="2">Multiple of home pay</td>
+              {% for multiple in result.totals.multiples %}
+                <td class="num">{{ multiple|floatformat:2 }}x</td>
+              {% endfor %}
+              <td class="num">{{ result.totals.multiple_total|floatformat:2 }}x</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
   {% endif %}
+
 {% endblock %}
