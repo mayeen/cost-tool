@@ -294,3 +294,20 @@ td {
 }
 
 .lead-time { margin: 12px 0 0; font-size: 14px; }
+
+.verdict.fail {
+  background: #f8d7da;
+  border-color: #f1aeb5;
+}
+
+/* Assumptions
+.assumptions {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #343a40;
+} */

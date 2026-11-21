@@ -16,6 +16,19 @@ SECTIONS = [
     ("passport", "Passport"),
     ("employer_duty", "Employer duty"),
 ]
+#summary line for tab 2
+def build_summary(form, inp):
+    def label(field):
+        return dict(form.fields[field].choices)[form.cleaned_data[field]]
+
+    def day(d):
+        return f"{d.day} {d:%B %Y}"
+
+    return (
+        f"{label('nationality')} national, "
+        f"{label('home_country')} -> {label('host_country')}, "
+        f"{day(inp.start_date)} to {day(inp.end_date)}"
+    )
 
 def build_sections(route, visa):
     requirements = route["common"]["requirements"] + visa["requirements"]
@@ -87,9 +100,9 @@ def immigration(request):
             cost_rows = build_cost_rows(route, visa, inp)
 
 
-            # dummy data
             result = {
-                "summary": "Swiss national, Switzerland -> United Kingdom, 1 Jan 2026 to 31 Dec 2027",
+                "summary": build_summary(form, inp),
+                "eligible": check["eligible"],
                 "verdict": build_verdict(visa, check, inp),
                 "sections": build_sections(route, visa),
                 "costs": {
@@ -97,10 +110,7 @@ def immigration(request):
                     "total": sum(row["amount"] for row in cost_rows),
                 },
                 "timeline": build_timeline(route, visa, data["start_date"]),
-
-
-
-            }
+            }    
          
 
     return render(request, "estimator/immigration.html", {

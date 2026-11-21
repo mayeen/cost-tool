@@ -12,7 +12,7 @@
         <a href="{% url 'cost' %}?{{ request.GET.urlencode }}">Change inputs in tab 1</a>
       </div>
 
-      <section class="verdict">
+      <section class="verdict{% if not result.eligible %} fail{% endif %}">
         <h2>{{ result.verdict.title }}</h2>
         <div class="checks">
           {% for check in result.verdict.checks %}
@@ -23,7 +23,7 @@
           <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
         {% endfor %}
       </section>
-
+      {% if result.eligible %}
       <div class="cards">
         {% for section in result.sections %}
           <section class="card">
@@ -95,6 +95,10 @@
           by {{ result.timeline.start_by|date:"j F Y" }}{% if result.timeline.includes_licence %}, because the UK company has no sponsor licence yet{% endif %}.
         </p>
       </section>
+      {% else %}
+        <p>No work visa in this tool fits these inputs, so requirements, costs and timeline are not shown. Change the salary or time with employer in tab 1 to check again.</p>
+      {% endif %}
+
 
     {% endif %}
 
