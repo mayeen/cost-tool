@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import timedelta
 from .calculations.inputs import EstimatorInput
-from .calculations.immigration import build_verdict, pick_visa
+from .calculations.immigration import build_verdict, pick_visa, build_cost_rows
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -16,13 +16,6 @@ SECTIONS = [
     ("passport", "Passport"),
     ("employer_duty", "Employer duty"),
 ]
-
-BASIS_TEXT = {
-    "one_off": "One-off",
-    "visa_length": "Depends on visa length",
-    "per_year_half_bands": "Per year of visa",
-    "first_12_then_6": "First 12 months, then per 6 months",
-}
 
 def build_sections(route, visa):
     requirements = route["common"]["requirements"] + visa["requirements"]
@@ -39,17 +32,6 @@ def build_sections(route, visa):
                 })
         sections.append({"title": title, "items": items})
     return sections
-
-def build_cost_rows(route, visa):
-    rows = []
-    for cost in route["common"]["costs"] + visa["costs"]:
-        rows.append({
-            "name": cost["name"],
-            "basis": BASIS_TEXT[cost["basis"]],
-            "amount": Decimal("100"),  
-            "sources": [SOURCES[k] for k in cost["source"]],
-        })
-    return rows
 
 def build_timeline(route, visa, start_date):
     steps = []
@@ -102,7 +84,7 @@ def immigration(request):
             inp = EstimatorInput.from_cleaned_data(data)
             visa, check = pick_visa(route, inp)
 
-            cost_rows = build_cost_rows(route, visa)
+            cost_rows = build_cost_rows(route, visa, inp)
 
 
             # dummy data

@@ -197,14 +197,18 @@ SSW_VISA = {
         },
     ],
 
-    "assumptions": [
-        "The UK sponsor is medium or large. Small sponsors pay £611 for the licence "
-        "and £480 + £240 per extra 6 months for the skills charge.",
-        "The UK host company does not yet hold a sponsor licence, so the licence fee "
-        "and its waiting time are included.",
-        "The job is an eligible occupation and the salary meets its going rate.",
-        "The visa salary check uses base salary only. Bonus is not counted.",
-    ],
+    # "assumptions": [
+    #     "The UK sponsor is medium or large. Small sponsors pay £611 for the licence "
+    #     "and £480 + £240 per extra 6 months for the skills charge.",
+    #     "The UK host company does not yet hold a sponsor licence, so the licence fee "
+    #     "and its waiting time are included.",
+    #     "The job is an eligible occupation and the salary meets its going rate.",
+    #     "The visa salary check uses base salary only. Bonus is not counted.",
+    #     "The Immigration Health Surcharge is charged on the visa length (assignment "
+    #     "plus 14 days). A part year of 6 months or less costs half a year.",
+    #     "For the Immigration Skills Charge, a part 6-month period counts as a full one.",
+
+    # ],
 }
 
 
@@ -295,11 +299,11 @@ CH_TO_GB_SWISS = {
             },
         ],
 
-        "assumptions": [
-            "The Swiss company stays the employer; the UK subsidiary hosts the employee "
-            "and runs payroll.",
-            "The employer pays all immigration costs.",
-        ],
+        # "assumptions": [
+        #     "The Swiss company stays the employer; the UK subsidiary hosts the employee "
+        #     "and runs payroll.",
+        #     "The employer pays all immigration costs.",
+        # ],
     },
 
     # candidate visas, each checked separately against its thresholds
