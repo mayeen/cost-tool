@@ -62,7 +62,55 @@ def dummy_cost_result():
         "years": ["Year 1 (2026/27)", "Year 2 (2027/28)"],
         "sections": sections,
         "totals": add_totals(sections),
+        "social_security": {
+            "title": "Social security: Swiss system applies",
+            "text": (
+                "The employee works for a Swiss employer and is sent to the UK temporarily, "
+                "for up to 2 years. With a certificate of coverage from Switzerland, only Swiss "
+                "contributions are paid, so no UK National Insurance is due for the employee "
+                "or the employer."
+            ),
+            "sources": [{
+                "title": "GOV.UK: Social security contributions for workers coming to the UK from the EEA or Switzerland",
+                "url": "https://www.gov.uk/guidance/social-security-contributions-for-workers-coming-to-the-uk-from-the-eea-or-switzerland",
+            }],
+        },
+        "working": [
+            {
+                "year": "Year 1 (2026/27)",
+                "start_income": d("162528.91"),
+                "rounds": [
+                    {"number": 1, "income": d("162528.91"), "tax": d("59341.01")},
+                    {"number": 2, "income": d("221869.92"), "tax": d("86044.46")},
+                    {"number": 3, "income": d("248573.37"), "tax": d("98061.02")},
+                    {"number": 4, "income": d("260589.93"), "tax": d("103468.47")},
+                ],
+                "round_count": 23,
+                "final": {"income": d("270421.65"), "tax": d("107892.74")},
+            },
+            {
+                "year": "Year 2 (2027/28)",
+                "start_income": d("153983.45"),
+                "rounds": [
+                    {"number": 1, "income": d("153983.45"), "tax": d("55495.55")},
+                    {"number": 2, "income": d("209479.00"), "tax": d("80468.55")},
+                    {"number": 3, "income": d("234452.00"), "tax": d("91706.40")},
+                    {"number": 4, "income": d("245689.85"), "tax": d("96763.44")},
+                ],
+                "round_count": 23,
+                "final": {"income": d("254884.46"), "tax": d("100901.01")},
+            },
+        ],
+        "assumptions": [
+            "Hypothetical Swiss income tax is the Swiss Federal Tax Administration calculator "
+            "result for CHF 170,000 in the city of Zurich, single, no children, no church tax.",
+            "UK 2026/27 rates are used for both years. The employee is UK tax resident in both years.",
+            "Moving costs are within the £8,000 relocation exemption. Temporary housing is treated "
+            "as taxable.",
+            "Swiss employer social security contributions are not included.",
+        ],
     }
+
 
 
 #summary line for tab 2

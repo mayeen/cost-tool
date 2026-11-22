@@ -102,6 +102,59 @@
         </table>
       </div>
     </section>
+        <div class="cards">
+      <section class="card">
+        <h2>{{ result.social_security.title }}</h2>
+        <p class="txt">{{ result.social_security.text }}</p>
+        {% for source in result.social_security.sources %}
+          <a class="src" href="{{ source.url }}" target="_blank" rel="noopener">Source: {{ source.title }}</a>
+        {% endfor %}
+      </section>
+
+      {% for year in result.working %}
+        <section class="card">
+          <h2>Working: UK tax gross-up, {{ year.year }}</h2>
+          <p class="txt">
+            Starting pay I = net home pay after hypothetical deductions + taxable benefits
+            = <strong>£{{ year.start_income|floatformat:"2g" }}</strong>.
+            Solve T = UKTax(I + T) by repeating until T stops changing.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Round</th>
+                  <th class="num">Income I + T</th>
+                  <th class="num">UK tax T</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for round in year.rounds %}
+                  <tr>
+                    <td>{{ round.number }}</td>
+                    <td class="num">£{{ round.income|floatformat:"2g" }}</td>
+                    <td class="num">£{{ round.tax|floatformat:"2g" }}</td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="3">...</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="total">
+                  <td>{{ year.round_count }}</td>
+                  <td class="num">£{{ year.final.income|floatformat:"2g" }}</td>
+                  <td class="num">£{{ year.final.tax|floatformat:"2g" }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+
+    {% include "estimator/_assumptions.html" with assumptions=result.assumptions %}
+
   {% endif %}
 
 {% endblock %}
