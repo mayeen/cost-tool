@@ -11,7 +11,7 @@ def format_money_string(amount):
 def check_eligibility(visa, inp):
 
     visa_obj = visa["thresholds"]
-    salary = inp.base_salary_gbp
+    salary = inp.home_currency_to_host_currency(inp.base_salary_home)
 
     salary_ok = salary >= visa_obj["min_salary_gbp"]
 
@@ -52,7 +52,7 @@ def build_verdict(visa, check, inp):
         "label": "Salary check",
         "text": (
             f"{'Met' if check['salary_ok'] else 'Not met'}. "
-            f"{format_money_string(inp.base_salary_gbp)} a year. "
+            f"{format_money_string(inp.home_currency_to_host_currency(inp.base_salary_home))} a year. "
             f"Needs at least {format_money_string(visa_obj['min_salary_gbp'])} or the job's going rate, "
             "whichever is higher."
         ),
