@@ -55,8 +55,8 @@ def benefit_amount(inp, benefit, year):
 
 def year_figures(inp, year):
     home_pay = inp.home_currency_to_host_currency(inp.gross_home)
-    swiss_tax = inp.home_currency_to_host_currency(swiss_hypo_tax(inp.gross_home))
-    swiss_ss = inp.home_currency_to_host_currency(swiss_social_security(inp.gross_home))
+    swiss_tax = inp.home_currency_to_host_currency(swiss_hypo_tax(inp.gross_home)) #deductible 1, section 4
+    swiss_ss = inp.home_currency_to_host_currency(swiss_social_security(inp.gross_home)) #deductible 2 , section 4 (Deductions)
     net_home_pay = home_pay - swiss_tax - swiss_ss
 
     benefits = [(b, benefit_amount(inp, b, year)) for b in uk.BENEFITS]

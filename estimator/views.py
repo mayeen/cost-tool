@@ -93,6 +93,8 @@ def build_cost_result(inp):
     working = [
         {
             "year": label,
+            "net_home_pay": y["net_home_pay"],
+            "taxable_benefits": y["taxable_benefits"],
             "start_income": y["income"],
             "rounds": y["rounds"][:4],
             "round_count": len(y["rounds"]),
