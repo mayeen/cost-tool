@@ -7,6 +7,10 @@ from django.urls import reverse
 from .calculations.immigration import build_cost_rows, check_eligibility, pick_visa
 from .calculations.inputs import EstimatorInput
 from .rules.immigration import SSW_VISA, get_route
+from .calculations.cost import uk_tax, year_result
+from .rules import switzerland as ch
+from .rules import uk
+
 
 
 def make_input(**changes):
@@ -19,6 +23,12 @@ def make_input(**changes):
         "end_date": date(2028, 4, 5),
         "years_with_employer": 3,
         "base_salary_home": Decimal("150000"),
+        "bonus_home": Decimal("20000"),
+        "housing_monthly_host": Decimal("3000"),
+        "relocation_allowance_home": Decimal("5000"),
+        "moving_costs_host": Decimal("6000"),
+        "temporary_housing_host": Decimal("4000"),
+
         "exchange_rate": Decimal("1.10"),
 
 
@@ -97,3 +107,45 @@ class PageTests(SimpleTestCase):
         response = self.client.get(reverse("immigration"), FORM_DATA)
         self.assertContains(response, "Work visa needed")
         self.assertContains(response, "8,273.50")
+    def test_cost_page_shows_real_totals(self):
+        response = self.client.get(reverse("cost"), FORM_DATA)
+        self.assertContains(response, "531,306.11")
+        self.assertContains(response, "1.72x")
+
+
+
+def pennies(amount):
+    return amount.quantize(Decimal("0.01"))
+
+
+class EmployerCostTests(SimpleTestCase):
+    def test_uk_tax_simple_case(self):
+        # GOV.UK example level: (50,000 - 12,570) x 20% = 7,486
+        self.assertEqual(uk_tax(Decimal("50000")), Decimal("7486"))
+
+    def test_uk_tax_allowance_taper(self):
+        # 110,000: allowance 7,570, taxable 102,430 -> 7,540 + 25,892
+        self.assertEqual(uk_tax(Decimal("110000")), Decimal("33432"))
+
+    def test_each_year_total(self):
+        inp = make_input()
+        self.assertEqual(pennies(year_result(inp, 1)["total_cost"]), Decimal("276421.65"))
+        self.assertEqual(pennies(year_result(inp, 2)["total_cost"]), Decimal("254884.46"))
+
+    def test_whole_assignment_total_and_multiple(self):
+        inp = make_input()
+        years = [year_result(inp, 1), year_result(inp, 2)]
+        total = sum(y["total_cost"] for y in years)
+        home = sum(y["home_pay"] for y in years)
+        self.assertEqual(pennies(total), Decimal("531306.11"))
+        self.assertEqual(round(total / home, 2), Decimal("1.72"))
+
+    def test_every_rule_source_exists(self):
+        uk_keys = (
+            uk.INCOME_TAX["source"] + uk.GROSS_UP["source"] + uk.SOCIAL_SECURITY["source"]
+            + [key for b in uk.BENEFITS for key in b["source"]]
+        )
+        for key in uk_keys:
+            self.assertIn(key, uk.SOURCES)
+        for key in ch.SOCIAL_SECURITY["source"] + ch.HYPO_TAX["source"]:
+            self.assertIn(key, ch.SOURCES)
