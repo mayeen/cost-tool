@@ -11,7 +11,7 @@ from .rules import switzerland as ch
 from .rules import uk
 from .rules.immigration import SOURCES, get_route
 
-
+#tab2
 SECTIONS = [
     ("work_permit", "Work permit"),
     ("business_visit", "Business visit before the assignment"),
@@ -20,18 +20,15 @@ SECTIONS = [
 ]
 
 def year_labels(inp):
-    """'Year 1 (2026/27)', 'Year 2 (2027/28)', ... One per started year of the assignment."""
     count = math.ceil(months_between(inp.start_date, inp.end_date) / 12)
     first = inp.start_date.year
     return [f"Year {n} ({first + n - 1}/{(first + n) % 100:02d})" for n in range(1, count + 1)]
 
-
+#Tab 1
 def build_cost_result(inp):
-    """Tab 1: employer cost table, gross-up working, social security card, assumptions."""
     labels = year_labels(inp)
     numbers = range(1, len(labels) + 1)
     years = [year_result(inp, n) for n in numbers]
-    convert = inp.home_currency_to_host_currency
 
     def uk_src(keys):
         return [uk.SOURCES[k] for k in keys]
@@ -48,9 +45,9 @@ def build_cost_result(inp):
             "subtotal_label": "Home pay",
             "rows": [
                 {"name": "Base salary", "tag": "", "sources": [],
-                 "amounts": [convert(inp.base_salary_home) for n in numbers]},
+                 "amounts": [inp.home_currency_to_host_currency(inp.base_salary_home) for n in numbers]},
                 {"name": "Bonus", "tag": "", "sources": [],
-                 "amounts": [convert(inp.bonus_home) for n in numbers]},
+                 "amounts": [inp.home_currency_to_host_currency(inp.bonus_home) for n in numbers]},
             ],
         },
         {

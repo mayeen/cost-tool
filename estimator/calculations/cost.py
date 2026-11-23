@@ -38,13 +38,13 @@ def swiss_social_security(gross_home):
         total += pay * part["rate"]
     return total
 
+#swiss hypothetical tax
 def swiss_hypo_tax(gross_home):
-    """ESTV result scaled by the same effective rate, in home currency."""
     tax = ch.HYPO_TAX
     return gross_home * tax["reference_tax"] / tax["reference_gross"]
 
+#benefit amount per year basis
 def benefit_amount(inp, benefit, year):
-    """One benefit for one assignment year, in host currency. None = not paid that year."""
     if benefit["first_year_only"] and year > 1:
         return None
     amount = getattr(inp, benefit["input"]) * benefit["times_per_year"]
@@ -105,9 +105,8 @@ def gross_up(income):
         tax = new_tax
     raise ValueError("The gross-up did not settle. Check the tax rates.")
 
-
+#per year cost before adding up 
 def year_result(inp, year):
-    """One year: figures before the gross-up, the UK tax, and the total employer cost."""
     figures = year_figures(inp, year)
     tax, rounds = gross_up(figures["income"])
     not_taxable = sum(

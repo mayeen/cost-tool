@@ -19,7 +19,7 @@ Needs Python 3.12 or newer.
 git clone https://github.com/mayeen/cost-tool
 cd cost-tool
 python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+source .venv/bin/activate    
 pip install -r requirements.txt
 cp .env.example .env
 ```
@@ -111,8 +111,6 @@ Listed on each tab under "Assumptions". The main ones:
 
 ## Use of AI tools
 
-<!-- Edit this section so it matches exactly what you did. -->
-
 I used Claude (Anthropic) during this assignment:
 
 - **Research:** finding and checking official sources (GOV.UK, HMRC manuals,
@@ -122,7 +120,8 @@ I used Claude (Anthropic) during this assignment:
   new to Django.
 - Dummy Data Generation: Dummy data has been generated in between the implementation and the
   object has been made using AI, the structure was given by myself.
-- HTML and CSS has been developed with the help of AI.
+- HTML and CSS has been modified and bug fixed with the help of AI.
+- Testcases has been researched with the help of AI. Code has been implemented by me.
 - The README.md file has also been generated using AI
 
 The final figures were checked by hand against the brief and by the tests.
