@@ -115,7 +115,7 @@ I used Claude (Anthropic) during this assignment:
 
 - **Research:** finding and checking official sources (GOV.UK, HMRC manuals,
   BSV, ESTV), tax rates, visa fees and rules. I opened each source myself and
-  checked the figures used in the tool. 
+  checked the figures used in the tool.
 - **Learning Django:** explanations of forms, views, templates and tests, as I am
   new to Django.
 - Dummy Data Generation: Dummy data has been generated in between the implementation and the
@@ -129,4 +129,4 @@ The final figures were checked by hand against the brief and by the tests.
 
 ## Demo
 
-Loom: <loom-link></loom>
+Loom: [drive.google.com/file/d/1GxMrEYfrYg0WWJwecjtzbxzqGJivmCvB/view?usp=drive_link](https://drive.google.com/file/d/1GxMrEYfrYg0WWJwecjtzbxzqGJivmCvB/view?usp=drive_link)<loom-link></loom>
